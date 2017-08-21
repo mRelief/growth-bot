@@ -1,0 +1,9 @@
+Hi, I’m growth-bot! I am tasked with helping mRelief track our growth. I will deliver weekly, monthly, and quarterly announcements automatically but, I can also deliver information whenever you want it. 
+
+Here are some useful commands that will help us communicate.
+* @growthbot hi/hello/hey/howdy
+    * I am always listening and would love to say hello!
+* @growthbot annual/quarter/month/week
+    * With this command , I will report our growth metrics for the specified time period.
+* @growthbot update
+    * With this command I will give you all of the growth-metrics I have available. This will include annual, quarterly, monthly, and weekly growth as well as mRelief’s quarterly and yearly growth percentage

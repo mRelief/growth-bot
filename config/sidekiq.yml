@@ -1,0 +1,29 @@
+:schedule:
+  YearBotWorker: # will post the year update on December 31st at 9AM
+    cron: "0 9 30 12 *"
+    class:  YearBotWorker
+  Q1BotWorker: # will post the quater update at the end of the first quarter
+    cron: "0 9 28 2 *"
+    class: Q1BotWorker
+  Q2BotWorker: # will post the quater update at the end of the second quarter
+    cron: "0 9 30 5 *"
+    class: Q2BotWorker
+  Q3BotWorker: # will post the quater update at the end of the third quarter
+    cron:  "0 9 30 8 *"
+    class: Q3BotWorker
+  Q4BotWorker: # will post the quater update at the end of the fourth quarter
+    cron:  "0 9 31 12 *"
+    class: Q4BotWorker
+  30MonthBotWorker: # will post this monthly update at the end of months that have 30 days 
+    cron: "0 9 30 4,6,9,11 *"
+    class: 30MonthBotWorker
+  31MonthBotWorker: # will post this monthly update at the end of months that have 31 days 
+    cron: "0 9 31 1,3,5,7,8 *"
+    class: 31MonthBotWorker
+  28MonthBotWorker: # will post this monthly update at the end of months that have 28 days 
+    cron: "0 9 28 2 *"
+    class: 28MonthBotWorker
+  WeekBotWorker: # will post this weekly update on Friday at 5PM of every week  
+    cron: "0 17 * * 5"
+    class: WeekBotWorker
+  
