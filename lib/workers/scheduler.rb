@@ -2,11 +2,11 @@ require 'sidekiq-scheduler'
 require 'net/http'
 require '~/playground/API.rb'
 
-#later, make sure to change the channel to 'General'
 $uri = URI.parse(ENV['redirect_url'])
 $channel = ENV['update_channel']
 $map = Admin.get_update_json()
 
+# This class is associated with an annual cron job and will give an update on forms submitted over the year. 
 class YearBotWorker
 	include Sidekiq::Worker
 
@@ -17,7 +17,7 @@ class YearBotWorker
 
 end
 
-
+# This class is associated with a quarterly cron job and will give an update on forms submitted over the first quarter. 
 class Q1BotWorker
 	include Sidekiq::Worker
 
@@ -28,6 +28,7 @@ class Q1BotWorker
 
 end
 
+# This class is associated with a quarterly cron job and will give an update on forms submitted over the second quarter. 
 class Q2BotWorker
 	include Sidekiq::Worker
 
@@ -38,6 +39,7 @@ class Q2BotWorker
 
 end
 
+# This class is associated with a quarterly cron job and will give an update on forms submitted over the third quarter. 
 class Q3BotWorker
 	include Sidekiq::Worker
 
@@ -48,6 +50,7 @@ class Q3BotWorker
 
 end
 
+# This class is associated with a quarterly cron job and will give an update on forms submitted over the fourth quarter. 
 class Q4BotWorker
 	include Sidekiq::Worker
 
@@ -58,6 +61,7 @@ class Q4BotWorker
 
 end
 
+# This class is associated with a cron job that runs at the end of 30-day months and will give an update on forms submitted over the given month. 
 class Month30BotWorker
 	include Sidekiq::Worker
 
@@ -68,6 +72,7 @@ class Month30BotWorker
 
 end
 
+# This class is associated with a cron job that runs at the end of 31-day months and will give an update on forms submitted over the given month. 
 class Month31BotWorker
 	include Sidekiq::Worker
 
@@ -78,6 +83,7 @@ class Month31BotWorker
 
 end
 
+# This class is associated with a cron job that runs at the end of 28-day months and will give an update on forms submitted over the given month. 
 class Month28BotWorker
 	include Sidekiq::Worker
 
@@ -88,6 +94,7 @@ class Month28BotWorker
 
 end
 
+# This class is associated with a cron job that runs weekly and will give an update on forms submitted over the week. 
 class WeekWorker
 	include Sidekiq::Worker
 

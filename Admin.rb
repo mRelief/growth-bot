@@ -1,7 +1,9 @@
 require './Auth'
 
+# This class populates map with user and API request information to be used during API request handling. 
 class Admin
   
+    #Returns map of all users associated with their userID
     def self.get_user_map(channel)
      member_map = Hash.new
      uri = URI('https://slack.com/api/users.list')
@@ -13,6 +15,8 @@ class Admin
     return member_map
   end 
 
+
+  #Returns map of time-periods associated with the amount of forms submitted
   def self.get_update_map()
      $growth_metrics = Hash.new
      uri = URI(ENV['endpoint_url'])
@@ -26,6 +30,7 @@ class Admin
        return $growth_metrics
   end 
 
+  #Returns map of event details associated with the value specified in the API response
   def self.get_event_map(request_data)
     event_data = Hash.new
     temp = $request_data['event']
