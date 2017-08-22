@@ -1,7 +1,7 @@
 require 'sinatra/base'
-require 'slack-ruby-client'
-require './APIClient'
 require './Auth'
+require './Events'
+require './Admin'
 require 'json'
 require 'sidekiq'
 require 'sidekiq-scheduler'
@@ -11,112 +11,70 @@ require 'sidekiq-scheduler'
 class API < Sinatra::Base
   # This is the endpoint Slack will post Event data to.
   post '/events' do
-   #Extract the Event payload from the request and parse the JSON
+
  
     $request_data = JSON.parse(request.body.read)
-    puts $request_data
+   
     if($request_data['type'] == 'url_verification') 
       return $request_data['challenge']
     else
-      $event_data = $request_data['event']
-      type = $event_data['type']
-      userID = $event_data['user']
-      text = $event_data['text']
-      channel = $event_data['channel']
-      user_map = Admin.populate_user_map(channel)
-      username = user_map[userID]
-      map = Admin.get_update_json()
+      $request_map = Admin.get_event_map($request_data)
+      $update_map = Admin.get_update_map()
+      user_map = Admin.get_user_map(ENV['channel_id'])
     end
 
-     puts "CHANNEL: " + channel + "\n\n" 
+    $user = user_map[$request_map['user']] 
 
-    if (type == 'message') && (username != 'growth-bot') && (text.include? ENV[bot_channel_id]) 
-       if (text.include? "hello") || (text.include? "hi") || (text.include? "howdy") || (text.include? "hey")
-               msg = "Hey there " + user_map[userID] + "!"
-               Events.respond(msg, channel, nil, user_map[userID])
-       elsif (text.include? "week")
-            growth_response = "Keep up the good work. Our growth is looking good!" 
-            if ((map["last_week"] > map["week"]) || (map["last_week"] == map["week"])) 
-               growth_response = "Let's try to see some more growth this week!"
-            end
-            msg = "Here's your update for the week, " + username + "! You have had " + (map['week']).to_s + " forms completed this week. Last week you had " + (map["last_week"]).to_s + " forms completed. "  + growth_response    
-            Events.respond(msg, channel, nil, user_map[userID]) 
-        elsif (text.include? "month")
-            growth_response = "Keep up the good work. Our growth is looking good!" 
-            if ((map["last_month"] > map["month"]) || (map["last_month"] == map["month"])) 
-               growth_response = "Let's try to see some more growth this month"
-            end
-            msg = "Here's your update for this month, " + username + "! You have had " + (map['month']).to_s + " forms completed this month. Last month you had " + (map["last_month"]).to_s + " forms completed. "  + growth_response    
-            Events.respond(msg, channel, nil, user_map[userID]) 
-          elsif (text.include? "quarter")
-            gr = "Keep up the good work. Our growth is looking good!" 
-            if ((map["last_quarter"] > map["quarter"]) || (map["last_quarter"] == map["quarter"])) 
-               gr = "Let's try to see some more growth this quarter!"
-            end
-            msg = "Here's your update for this quarter, " + username + "! You have had " + (map['quarter']).to_s + " forms completed this quarter. Last quarter you had " + (map["last_quarter"]).to_s + " forms completed. "  + gr + "So far, mRelief has grown " + (map["quarter_percent"]).to_s + "% this quarter."
-            Events.respond(msg, channel, nil, user_map[userID]) 
-          elsif (text.include? "year")
-            gr = "Keep up the good work. Our growth is looking good!" 
-            if ((map["last_year"] > map["annual"]) || (map["last_year"] == map["annual"])) 
-               gr = "Let's try to see some more growth this year!"
-            end
-            msg = "Here's your update for this year, " + username + "! You have had " + (map['annual']).to_s + " forms completed this year.  At this time last year, mRelief had " + (map["last_year"]).to_s + " forms completed. "  + gr + "So far, mRelief has grown " + (map["annual_percent"]).to_s + "% this year."
-            Events.respond(msg, channel, nil, user_map[userID])
-          elsif(text.include? "update")
-             puts map
-             msg = "Here's your update, " + username + "! You have had " + (map['quarter']).to_s  +  " forms completed this quarter, " + (map['month']).to_s + " forms completed this month, and " + (map['week']).to_s + " forms completed this week. You have grown " +  (map['quarter_percent']).to_s + "% this quarter, and " + (map['annual_percent']).to_s + "% so far this year!" 
-             Events.respond(msg, channel, nil, user_map[userID]) 
-          elsif(text.include? "help")
+
+
+    if ($request_map['type'] == 'message') && ($user != 'growth-bot') && ($request_map['text'].include? ENV['bot_channel_id']) 
+
+       if ($request_map['text'].include? "hello") || ($request_map['text'].include? "hi") || ($request_map['text'].include? "howdy") || ($request_map['text'].include? "hey")
+               status 200
+               msg = "Hey there " + $user + "!"
+               Events.respond(msg, ENV['update_channel'])
+               return {:status => 200}.to_json 
+
+       elsif ($request_map['text'].include? "week")
+            growth_response = Events.get_growth_response("week", "last_week")
+            msg = "Here's your update for the week, " + $user + "!\n\n  You have completed" + ($update_map['week']).to_s + " forms this week. Last week you completed " + ($update_map["last_week"]).to_s + " forms. "  + growth_response    
+            Events.respond(msg, ENV['update_channel']) 
+
+        elsif ($request_map['text'].include? "month")
+            growth_response = Events.get_growth_response("month", "last_month")
+            msg = "Here's your update for this month, " + $user + "!\n\n You completed " + ($update_map['month']).to_s + " forms this month. Last month completed " + ($update_map["last_month"]).to_s + " forms. "  + growth_response    
+            Events.respond(msg, ENV['update_channel']) 
+        
+          elsif ($request_map['text'].include? "quarter")
+            growth_response = Events.get_growth_response("quarter", "last_quarter")
+            msg = "Here's your update for this quarter, " + $user + "!\n\n  You have completed " + ($update_map['quarter']).to_s + " forms. Last quarter you had " + ($update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + "So far, mRelief has grown " + ($update_map["quarter_percent"]).to_s + "% this quarter."
+            Events.respond(msg, ENV['update_channel']) 
+
+          elsif ($request_map['text'].include? "year")
+            growth_response = Events.get_growth_response("annual", "last_year")
+            msg = "Here's your update for this year, " + $user + "!\n\n  You have completed " + ($update_map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + ($update_map["last_year"]).to_s + " forms completed. "  + growth_response + "So far, mRelief has grown " + ($update_map["annual_percent"]).to_s + "% this year."
+            Events.respond(msg, ENV['update_channel'])
+
+          elsif($request_map['text'].include? "update")
+             msg = "Here's your update, " + $user + "!\n\n  You have had " + ($update_map['quarter']).to_s  +  " forms completed this quarter, " + ($update_map['month']).to_s + " forms completed this month, and " + ($update_map['week']).to_s + " forms completed this week. You have grown " +  ($update_map['quarter_percent']).to_s + "% this quarter, and " + ($update_map['annual_percent']).to_s + "% so far this year!" 
+             Events.respond(msg, ENV['update_channel']) 
+
+          elsif($request_map['text'].include? "help")
             file =  File.open("help.txt", "r") 
             msg  = file.read   
-            Events.respond(msg, channel, nil, user_map[userID])            
-            end
+            Events.respond(msg, ENV['update_channel'])            
+          
+          end
+
         else 
-        puts "Unexpected event:\n"
-        #puts JSON.pretty_generate($request_data)        
-  end 
-    return {:status => 200}.to_json  
-end
-end
+        puts "Unexpected event:\n"   
 
-
-class Events
-  # A new user joins the team
-  def self.respond(msg, channel, attachment, user)
-    uri = URI.parse('https://slack.com/api/chat.postMessage')
-        if (attachment == nil)
-           res = Net::HTTP.post_form(uri, 'token' => ENV['slack_api_token'], 'channel' => channel , 'text' => msg, 'as_user' => 'false', 'username' => 'growth-bot')
-        else
-          res = Net::HTTP.post_form(uri, 'token' =>ENV['slack_api_token'], "text" => msg, 'channel' => channel, 'as_user' => 'false', 'username' => 'growth-bot')
-        end
-    end
-end
-
-class Admin
-  
-
-    def self.populate_user_map(channel)
-     member_map = Hash.new
-     uri = URI('https://slack.com/api/users.list')
-     res = Net::HTTP.post_form(uri, 'token' => ENV['slack_api_token'], 'channel' => channel)
-     post_data = JSON.parse(res.body)
-     post_data['members'].each do |member|
-        member_map[member['id']] = member['profile']['first_name']
-     end
-    return member_map
   end 
 
-  def self.get_update_json()
-     $growth_metrics = Hash.new
-     uri = URI(ENV['endpoint_url'])
-     res = Net::HTTP.get_response(uri)
-     res = JSON.parse(res.body)
-     post_data = res["data"]
-      post_data.each do |time| 
-        stringy =  time.first
-        $growth_metrics[stringy["time-period"]] = stringy["value"]
-     end
-       return $growth_metrics
-  end 
+    return {:status => 200}.to_json 
 
+  end
 end
+
+
+

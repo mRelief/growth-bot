@@ -25,12 +25,11 @@ GEM
       timers (>= 4.1.1)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
+    dotenv (2.0.1)
     faraday (0.13.0)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.12.2)
       faraday (>= 0.7.4, < 1.0)
-    figaro (1.1.1)
-      thor (~> 0.14)
     gli (2.16.1)
     hashie (3.5.6)
     hitimes (1.2.6)
@@ -70,7 +69,6 @@ GEM
       hashie
       json
       websocket-driver
-    thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.8)
     timers (4.1.2)
@@ -85,7 +83,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  figaro
+  dotenv
   sidekiq (~> 3.5, >= 3.5.3)
   sidekiq-scheduler (~> 2.0)
   sinatra (~> 1.4.7)

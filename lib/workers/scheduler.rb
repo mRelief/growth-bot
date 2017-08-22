@@ -12,7 +12,7 @@ class YearBotWorker
 
 	def perform
 		msg = "Here's your update for this year, mRelief! You have completed " + ($map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + ($map["last_year"]).to_s + " forms completed. mRelief has grown " + ($map["annual_percent"]).to_s + "% this year."
-        Events.respond(msg, $channel, nil, nil)
+        	Events.respond(msg, $channel, nil, nil)
 	end
 
 end
