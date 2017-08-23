@@ -8,7 +8,8 @@ require 'slack-ruby-client'
 # This class will perfom the authorization flow of installing a Slack app to a team. 
 class Auth < Sinatra::Base
 
-  Dotenv.load( '.env.development', '.env.production')
+  Dotenv.load('.env.development', '.env.production')
+
   
   BOT_SCOPE = 'identify,bot,channels:history,im:history,users:read,chat:write:bot'
 

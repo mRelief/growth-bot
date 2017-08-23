@@ -33,7 +33,7 @@ class Admin
   #Returns map of event details associated with the value specified in the API response
   def self.get_event_map(request_data)
     event_data = Hash.new
-    temp = $request_data['event']
+    temp = request_data['event']
     event_data['type'] = temp['type']
     event_data['user'] = temp['user']
     event_data['text'] = temp['text']
