@@ -13,11 +13,11 @@ If you would like to use this bot as a model for your own project, feel free to 
 ## Functionality 
 
 Here are the commands that allow users to communicate with growth-bot.
-* @growthbot hi/hello/hey/howdy 
+* @growthbot hi/hello/hey/howdy \newline
          ![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/hellosocial.gif)
-* @growthbot annual/quarter/month/week
+* @growthbot annual/quarter/month/week\newline
          ![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/weekbotsocial.gif)
-* @growthbot update 
+* @growthbot update \newline
          ![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/updatebotsocial.gif)
 
 
