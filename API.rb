@@ -21,7 +21,7 @@ class API < Sinatra::Base
     else
       request_map = Admin.get_event_map(request_data)
       update_map = Admin.get_update_map()
-      user_map = Admin.get_user_map(ENV['channel_id'])
+      user_map = Admin.get_user_map(request_map['channel'])
     end
 
     user = user_map[request_map['user']] 
