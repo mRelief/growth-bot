@@ -10,6 +10,7 @@ class Events
   def self.respond(msg, channel)
     uri = URI.parse('https://slack.com/api/chat.postMessage')
     res = Net::HTTP.post_form(uri, 'token' => $token, 'channel' => channel , 'text' => msg, 'as_user' => 'false', 'username' => 'growth-bot')
+
   end
 
 #Returns appopriate motivational message based upon growth numbers.

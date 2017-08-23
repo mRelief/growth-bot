@@ -18,16 +18,20 @@ class Admin
 
   #Returns map of time-periods associated with the amount of forms submitted
   def self.get_update_map()
-     $growth_metrics = Hash.new
+     growth_metrics = Hash.new
      uri = URI(ENV['endpoint_url'])
      res = Net::HTTP.get_response(uri)
      res = JSON.parse(res.body)
      post_data = res["data"]
+     puts "POST DATA"
+     puts post_data
       post_data.each do |time| 
         stringy =  time.first
-        $growth_metrics[stringy["time-period"]] = stringy["value"]
+        growth_metrics[stringy["time-period"]] = stringy["value"]
      end
-       return $growth_metrics
+        puts "GROWTH METRICS"
+        puts growth_metrics
+        return growth_metrics
   end 
 
   #Returns map of event details associated with the value specified in the API response
