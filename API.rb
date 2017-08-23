@@ -38,25 +38,25 @@ class API < Sinatra::Base
 
        elsif (request_map['text'].include? "week")
             growth_response = Events.get_growth_response("week", "last_week")
-            msg = "Here's your update for the week, " + user + "!\n\n You have completed" + (update_map['week']).to_s + " forms this week. Last week you completed " + (update_map["last_week"]).to_s + " forms. "  + growth_response    
+            msg = "Here's your update for the week, " + user + "!\n\n You have completed" + (update_map['week']).to_s + " forms this week. Last week mRelief completed " + (update_map["last_week"]).to_s + " forms. "  + growth_response    
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 
         elsif (request_map['text'].include? "month")
             growth_response = Events.get_growth_response("month", "last_month")
-            msg = "Here's your update for this month, " + user + "!\n\n You completed " + (update_map['month']).to_s + " forms this month. Last month completed " + (update_map["last_month"]).to_s + " forms. "  + growth_response    
+            msg = "Here's your update for this month, " + user + "!\n\n You completed " + (update_map['month']).to_s + " forms this month. Last month mRelief completed " + (update_map["last_month"]).to_s + " forms. "  + growth_response    
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
         
           elsif (request_map['text'].include? "quarter")
             growth_response = Events.get_growth_response("quarter", "last_quarter")
-            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (update_map['quarter']).to_s + " forms. Last quarter you had " + (update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + "So far, mRelief has grown " + (update_map["quarter_percent"]).to_s + "% this quarter."
+            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (update_map['quarter']).to_s + " forms. Last quarter you had " + (update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + " So far, mRelief has grown " + (update_map["quarter_percent"]).to_s + "% this quarter."
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 
-          elsif (request_map['text'].include? "year" ||request_map['text'].include? "annual" )
+          elsif (request_map['text'].include? "year" || request_map['text'].include? "annual" )
             growth_response = Events.get_growth_response("annual", "last_year")
-            msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (update_map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + (update_map["last_year"]).to_s + " forms completed. "  + growth_response + "So far, mRelief has grown " + (update_map["annual_percent"]).to_s + "% this year."
+            msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (update_map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + (update_map["last_year"]).to_s + " forms completed. "  + growth_response + " So far, mRelief has grown " + (update_map["annual_percent"]).to_s + "% this year."
             Events.respond(msg,request_map['channel'])
             return {:status => 200}.to_json 
 
