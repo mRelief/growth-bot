@@ -6,12 +6,19 @@ This is a Slack bot designed to track and report the growth metrics of the non-p
 
 If you would like to use this bot as a model for your own project, feel free to clone this repo and do the following. 
 
-`bundle install`
+`bundle install` \newline
 `bundle exec rackup`
 
 
 ## Functionality 
 
-![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/bothello.gif)
+Here are the commands that allow users to communicate with growth-bot.
+* @growthbot hi/hello/hey/howdy 
+         ![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/hellosocial.gif)
+* @growthbot annual/quarter/month/week
+         ![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/weekbotsocial.gif)
+* @growthbot update 
+         ![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/updatebotsocial.gif)
 
-![alt text](https://github.com/mRelief/growth-bot/blob/master/gifs/botmonth.gif)
+
+
