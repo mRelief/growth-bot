@@ -32,13 +32,13 @@ class API < Sinatra::Base
 
        if (request_map['text'].include? "hello") || (request_map['text'].include? "hi") || (request_map['text'].include? "howdy") || (request_map['text'].include? "hey")
                status 200
-               msg = "Hey there " + user + "!"
+               msg = "Hey there, " + user + "!"
                Events.respond(msg,request_map['channel'])
                return {:status => 200}.to_json 
 
        elsif (request_map['text'].include? "week")
             growth_response = Events.get_growth_response("week", "last_week")
-            msg = "Here's your update for the week, " + user + "!\n\n You have completed" + (update_map['week']).to_s + " forms this week. Last week mRelief completed " + (update_map["last_week"]).to_s + " forms. "  + growth_response    
+            msg = "Here's your update for the week, " + user + "!\n\n You have completed " + (update_map['week']).to_s + " forms this week. Last week mRelief completed " + (update_map["last_week"]).to_s + " forms. "  + growth_response    
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 
@@ -50,7 +50,7 @@ class API < Sinatra::Base
         
           elsif (request_map['text'].include? "quarter")
             growth_response = Events.get_growth_response("quarter", "last_quarter")
-            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (update_map['quarter']).to_s + " forms. Last quarter you had " + (update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + " So far, mRelief has grown " + (update_map["quarter_percent"]).to_s + "% this quarter."
+            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (update_map['quarter']).to_s + " forms this quarter. Last quarter you had " + (update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + " So far, mRelief has grown " + (update_map["quarter_percent"]).to_s + "% this quarter."
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 

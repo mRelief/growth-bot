@@ -17,7 +17,7 @@ class Events
  def self.get_growth_response(this_time_period, last_time_period)
     gr =  "Keep up the good work. Our growth is looking good!" 
     if (($map[last_time_period] > $map[this_time_period]) || ($map[this_time_period] == $map[last_time_period])) 
-        gr = "Let's try to see some more growth this week!"
+        gr = "Let's try to see some more growth!"
     end
     return gr
   end
