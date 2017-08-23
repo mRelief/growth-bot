@@ -56,12 +56,12 @@ class API < Sinatra::Base
 
           elsif ( (request_map['text'].include? "year") || (request_map['text'].include? "annual") )
             growth_response = Events.get_growth_response("annual", "last_year")
-            msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (update_map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + (update_map["last_year"]).to_s + " forms completed. "  + growth_response + " So far, mRelief has grown " + (update_map["annual_percent"]).to_s + "% this year."
+            msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (update_map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + (update_map["last_year"]).to_s + " forms completed. "  + growth_response + " So far, mRelief has grown " + (update_map["annual_percent"]).to_s + "% compared to last year."
             Events.respond(msg,request_map['channel'])
             return {:status => 200}.to_json 
 
           elsif(request_map['text'].include? "update")
-             msg = "Here's your update, " + user + "!\n\n You have had " + (update_map['quarter']).to_s  +  " forms completed this quarter, " + (update_map['month']).to_s + " forms completed this month, and " + (update_map['week']).to_s + " forms completed this week. You have grown " +  (update_map['quarter_percent']).to_s + "% this quarter, and " + (update_map['annual_percent']).to_s + "% compared to last year!" 
+             msg = "Here's your update, " + user + "!\n\n You have had " + (update_map['quarter']).to_s  +  " forms completed this quarter, " + (update_map['month']).to_s + " forms completed this month, and " + (update_map['week']).to_s + " forms completed this week. You have grown " +  (update_map['quarter_percent']).to_s + "% compared to last quarter, and " + (update_map['annual_percent']).to_s + "% compared to last year!" 
              Events.respond(msg,request_map['channel']) 
              return {:status => 200}.to_json 
 
