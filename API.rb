@@ -54,7 +54,7 @@ class API < Sinatra::Base
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 
-          elsif (request_map['text'].include? "year")
+          elsif (request_map['text'].include? "year" ||request_map['text'].include? "annual" )
             growth_response = Events.get_growth_response("annual", "last_year")
             msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (update_map['annual']).to_s + " forms this year.  At this time last year, mRelief had " + (update_map["last_year"]).to_s + " forms completed. "  + growth_response + "So far, mRelief has grown " + (update_map["annual_percent"]).to_s + "% this year."
             Events.respond(msg,request_map['channel'])

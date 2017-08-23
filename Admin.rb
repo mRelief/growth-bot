@@ -10,11 +10,7 @@ class Admin
      res = Net::HTTP.post_form(uri, 'token' => ENV['slack_api_token'], "scope" => "users:read")
      post_data = JSON.parse(res.body)
      post_data['members'].each do |member|
-        if ( member['profile']['first_name']  != nil)
-             member_map[member['id']] = member['profile']['first_name']
-        else 
-             member_map[member['id']] = member['profile']['name']
-        end
+        member_map[member['id']] = member['profile']['first_name']
      end
     return member_map
   end 
