@@ -50,7 +50,7 @@ class API < Sinatra::Base
         
           elsif (request_map['text'].include? "quarter")
             growth_response = Events.get_growth_response("quarter", "last_quarter")
-            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (update_map['quarter']).to_s + " forms this quarter. Last quarter you had " + (update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + " So far, mRelief has grown " + (update_map["quarter_percent"]).to_s + "% this quarter."
+            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (update_map['quarter']).to_s + " forms this quarter. Last quarter you had " + (update_map["last_quarter"]).to_s + " forms completed. "  +  growth_response + " So far, mRelief has grown " + (update_map["quarter_percent"]).to_s + "% compared to last quarter."
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 
@@ -61,7 +61,7 @@ class API < Sinatra::Base
             return {:status => 200}.to_json 
 
           elsif(request_map['text'].include? "update")
-             msg = "Here's your update, " + user + "!\n\n You have had " + (update_map['quarter']).to_s  +  " forms completed this quarter, " + (update_map['month']).to_s + " forms completed this month, and " + (update_map['week']).to_s + " forms completed this week. You have grown " +  (update_map['quarter_percent']).to_s + "% this quarter, and " + (update_map['annual_percent']).to_s + "% so far this year!" 
+             msg = "Here's your update, " + user + "!\n\n You have had " + (update_map['quarter']).to_s  +  " forms completed this quarter, " + (update_map['month']).to_s + " forms completed this month, and " + (update_map['week']).to_s + " forms completed this week. You have grown " +  (update_map['quarter_percent']).to_s + "% this quarter, and " + (update_map['annual_percent']).to_s + "% compared to last year!" 
              Events.respond(msg,request_map['channel']) 
              return {:status => 200}.to_json 
 
