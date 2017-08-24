@@ -3,7 +3,7 @@ require './Auth'
 # This class populates map with user and API request information to be used during API request handling. 
 class Admin
   
-    #Returns map of all users associated with their userID
+    # Returns map of all users associated with their userID
     def self.get_user_map(channel)
      member_map = Hash.new
      uri = URI('https://slack.com/api/users.list')
@@ -16,16 +16,13 @@ class Admin
   end 
 
 
-  #Returns map of time-periods associated with the amount of forms submitted
-  def self.get_update_map()
+  # Returns map of time-periods associated with the amount of forms submitted
+  def self.get_update_map(uri)
      growth_metrics = Hash.new
-     uri = URI(ENV['endpoint_url'])
      res = Net::HTTP.get_response(uri)
-     res = JSON.parse(res.body)
-     post_data = res["data"]
-     puts "POST DATA"
-     puts post_data
-      post_data.each do |time| 
+     response = JSON.parse(res.body)
+     post_data = response["data"]
+     post_data.each do |time| 
         stringy =  time.first
         growth_metrics[stringy["time-period"]] = stringy["value"]
      end
@@ -34,7 +31,7 @@ class Admin
         return growth_metrics
   end 
 
-  #Returns map of event details associated with the value specified in the API response
+  # Returns map of event details associated with the value specified in the API response
   def self.get_event_map(request_data)
     event_data = Hash.new
     temp = request_data['event']
