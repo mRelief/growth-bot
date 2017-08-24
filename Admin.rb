@@ -1,4 +1,5 @@
 require './Auth'
+require 'uri'
 
 # This class populates map with user and API request information to be used during API request handling. 
 class Admin
@@ -19,7 +20,9 @@ class Admin
   # Returns map of time-periods associated with the amount of forms submitted
   def self.get_update_map(uri)
      growth_metrics = Hash.new
-     res = Net::HTTP.get_response(uri)
+     escapes_uri = URI.escape(uri)
+     parse_uri = URI.parse(escapes_uri)
+     res = Net::HTTP.get_response(parse_uri)
      response = JSON.parse(res.body)
      post_data = response["data"]
      post_data.each do |time| 
