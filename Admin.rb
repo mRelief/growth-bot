@@ -45,6 +45,4 @@ class Admin
     return event_data
   end
 
-      
-
 end

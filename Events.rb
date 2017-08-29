@@ -21,4 +21,15 @@ class Events
     return gr
   end
 
+#Returns appopriate percent response based upon growth percentages.
+  def self.get_percent_response(metric)
+    if (metric != nil) { 
+        percent_response = metric.to_s +  "% regarding applications submitted."
+    } else {
+        percent_response = "over 100% regarding applications becuase we did not have any applications submitted last year!"
+    }
+    return percent_response
+  end
+
+
 end

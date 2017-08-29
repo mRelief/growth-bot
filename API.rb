@@ -52,18 +52,18 @@ class API < Sinatra::Base
         
           elsif (request_map['text'].include? "quarter")
             growth_response = Events.get_growth_response(forms_submitted_map, "quarter", "last_quarter")
-            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (forms_submitted_map['quarter']).to_s + " forms and " + (applications_submitted_map['quarter']).to_s + " applications this quarter. Last quarter you had " + (forms_submitted_map["last_quarter"]).to_s + " forms and " + (applications_submitted_map['last_quarter']).to_s + " applications completed. "  +  growth_response + "\n\nSo far, mRelief has grown " + (forms_submitted_map["quarter_percent"]).to_s + "% compared to last quarter regarding forms submitted and " + (applications_submitted_map['quarter_percent']).to_s + "% regarding applications submitted."
+            msg = "Here's your update for this quarter, " + user + "!\n\n You have completed " + (forms_submitted_map['quarter']).to_s + " forms and " + (applications_submitted_map['quarter']).to_s + " applications this quarter. Last quarter you had " + (forms_submitted_map["last_quarter"]).to_s + " forms and " + (applications_submitted_map['last_quarter']).to_s + " applications completed. "  +  growth_response + "\n\nSo far, mRelief has grown " + (forms_submitted_map["quarter_percent"]).to_s + "% compared to last quarter regarding forms submitted and " + Events.get_percent_response(applications_submitted_map['quarter_percent'])
             Events.respond(msg,request_map['channel']) 
             return {:status => 200}.to_json 
 
           elsif ( (request_map['text'].include? "year") || (request_map['text'].include? "annual") )
             growth_response = Events.get_growth_response(forms_submitted_map, "annual", "last_year")
-            msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (forms_submitted_map['annual']).to_s + " forms and " + (applications_submitted_map['annual']).to_s + " applications this year.  At this time last year, mRelief had " + (forms_submitted_map["last_year"]).to_s + " forms and " + (applications_submitted_map['last_year']).to_s + " applications completed. "  + growth_response + " So far, mRelief has grown " + (forms_submitted_map["annual_percent"]).to_s + "% compared to last yea regarding forms submitted and " + (applications_submitted_map['annual_percent']).to_s +  "% regarding applications submitted."
+            msg = "Here's your update for this year, " + user + "!\n\n You have completed " + (forms_submitted_map['annual']).to_s + " forms and " + (applications_submitted_map['annual']).to_s + " applications this year.  At this time last year, mRelief had " + (forms_submitted_map["last_year"]).to_s + " forms and " + (applications_submitted_map['last_year']).to_s + " applications completed. "  + growth_response + "\n\nSo far, mRelief has grown " + (forms_submitted_map["annual_percent"]).to_s + "% compared to last year regarding forms submitted and " + Events.get_percent_response(applications_submitted_map['annual_percent'])
             Events.respond(msg,request_map['channel'])
             return {:status => 200}.to_json 
 
           elsif(request_map['text'].include? "update")
-             msg = "Here's your update, " + user + "!\n\n You have had " + (forms_submitted_map['quarter']).to_s  +  " forms and " + (applications_submitted_map['quarter']).to_s + " applications completed this quarter, " + (forms_submitted_map['month']).to_s + " forms and " + (applications_submitted_map['month']).to_s + " applications completed this month, and " + (forms_submitted_map['week']).to_s + " forms and " + (applications_submitted_map['week']).to_s + " applications completed this week.\n\nYou have grown " +  (forms_submitted_map['quarter_percent']).to_s + "% compared to last quarter regarding forms submitted and " + (applications_submitted_map['quarter_percent']).to_s + "% regarding applications submitted.\n\n So far this year, mRelief has grown " +  (forms_submitted_map['annual_percent']).to_s + "%  in terms of forms submitted regarding forms submitted and " + (applications_submitted_map['quarter_percent']).to_s +  "% regarding applications submitted." 
+             msg = "Here's your update, " + user + "!\n\n You have had " + (forms_submitted_map['quarter']).to_s  +  " forms and " + (applications_submitted_map['quarter']).to_s + " applications completed this quarter, " + (forms_submitted_map['month']).to_s + " forms and " + (applications_submitted_map['month']).to_s + " applications completed this month, and " + (forms_submitted_map['week']).to_s + " forms and " + (applications_submitted_map['week']).to_s + " applications completed this week.\n\n You have grown " +  (forms_submitted_map['quarter_percent']).to_s + "% compared to last quarter regarding forms submitted and " + Events.get_percent_response(applications_submitted_map['annual_percent'] )+ "So far this year, mRelief has grown " +  (forms_submitted_map['annual_percent']).to_s + "%  in terms of forms submitted regarding forms submitted and " + Admin.get_percent_response(applications_submitted_map['quarter_percent'])  
              Events.respond(msg,request_map['channel']) 
              return {:status => 200}.to_json 
 
@@ -72,7 +72,6 @@ class API < Sinatra::Base
             msg  = file.read   
             Events.respond(msg,request_map['channel'])  
             return {:status => 200}.to_json           
-          
           end
 
         else 
